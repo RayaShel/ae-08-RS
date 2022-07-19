@@ -1,4 +1,4 @@
-## Scrape the list of most populat TV shows from https://www.imdb.com/chart/tvmeter
+## Scrape the list of most popular TV shows from https://www.imdb.com/chart/tvmeter
 
 # load packages ----------------------------------------------------------------
 
@@ -7,24 +7,31 @@ library(rvest)
 
 # read in http://www.imdb.com/chart/tvmeter ------------------------------------
 
-page <- read_html("___")
+page <- read_html("https://www.imdb.com/chart/tvmeter")
 
 # years ------------------------------------------------------------------------
 
 years <- page %>%
-  html_nodes("___") %>%
+  html_nodes("a+ .secondaryInfo") %>%
   html_text() %>%
-  ___
+  str_remove("\\(") %>%
+  str_remove("\\)") %>%
+  as.numeric()
+ 
 
 # scores -----------------------------------------------------------------------
 
 scores <- page %>%
-  ___
+  html_nodes(".imdbRating") %>%
+  html_text() %>%
+  as.numeric()
 
 # names ------------------------------------------------------------------------
 
-names <- ___
-
+names <- page %>%
+html_nodes(".titleColumn a") %>%
+  html_text() %>%
+ 
 # tvshows dataframe ------------------------------------------------------------
 
 tvshows <- tibble(
